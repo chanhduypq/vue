@@ -13,6 +13,28 @@ and open the template in the editor.
         
     </head>
     <body>
-        
+        <div id="title">
+          <span v-bind:title="message">
+            Rê chuột vào đây để hiển thị ngày giờ hiện tại
+          </span>
+        </div>
+        <div id="div" v-bind:title="message">
+            rê chuột vào đây nữa đi, xem thử nó hiển thị cái gì
+        </div>
+        <script type="text/javascript">
+            var i=1000;
+            var app = new Vue({
+              el: '#title',
+              data: {
+                message: 'Thời gian hiện tại: ' + new Date().toLocaleString()
+              }
+            })
+            var app1 = new Vue({
+              el: '#div',
+              data: {
+                message: 'giá trị của biến i là: '+i
+              }
+            })
+        </script>
     </body>
 </html>
