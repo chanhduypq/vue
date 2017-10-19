@@ -12,8 +12,23 @@ and open the template in the editor.
         <script src="../dist/vue.min.js"></script>
     </head>
     <body>
+        <div id="app">
+          
+        </div>
         <script type="text/javascript">
-            
+            var app = new Vue({
+              el: '#app',
+              data: {
+                data1: '1',
+                data2: '2'
+              }
+            });  
+            alert(app.data1);
+            alert(app.data2);
+            app.data1+=' cộng dồn chuỗi';
+            app.data2='giá trị khác';
+            alert(app.data1);
+            alert(app.data2);
         </script>
     </body>
 </html>
