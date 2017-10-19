@@ -23,7 +23,7 @@ and open the template in the editor.
         <input id="event_keypress" style="width: 500px;" type="text" v-on:keypress="show_dialog" placeholder="Nhập vào đây để thấy event keypress"/>
         <hr>
         <div id="fn">
-          <button v-on:click="sum(1,2)">Hiển thị tổng</button>
+          <button v-on:click="sum=sum(1,2);alert(sum*2);">Hiển thị tổng</button>
           <button v-on:click="show('chuỗi')">Hiển thị chuỗi</button>
         </div>
         <script type="text/javascript">
@@ -34,7 +34,7 @@ and open the template in the editor.
                   alert(message)
                 },
                 sum: function (number1,number2) {
-                  alert(number1+number2);
+                  return number1+number2;
                 },
               }
             })
