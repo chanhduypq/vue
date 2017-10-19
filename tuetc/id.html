@@ -22,6 +22,12 @@ and open the template in the editor.
           {{ 1==1 ? 'YES' : 'NO' }}
           <h1 v-show="1==1">true</h1>
           <h1 v-show="false">false</h1>
+          <div>
+              {{ computed_message1 }}
+          </div>
+          <div>
+              {{ computed_message2 }}
+          </div>
         </div>
         
         <div id="key-example" class="demo">
@@ -42,6 +48,16 @@ and open the template in the editor.
               el: '#app',
               data: {
                 message: 'hiển thị thông tin tại đây.'
+              },
+              computed: {
+                computed_message1: function () {
+                  return 'chuỗi'
+                },
+                computed_message2: function () {
+                    so1=1;
+                    so2=2;
+                  return so1+so2;
+                }
               }
             });  
             
