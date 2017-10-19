@@ -12,8 +12,24 @@ and open the template in the editor.
         <script src="../dist/vue.min.js"></script>
     </head>
     <body>
+        <div id="v_bind">
+          <div v-bind:title="value_for_title_attribute">
+            demo title
+          </div>
+            <input v-bind:type="value_for_type_attribute">
+            <div v-bind:style="value_for_style_attribute">
+                demo style
+            </div>
+        </div>    
         <script type="text/javascript">
-                   
+            var app = new Vue({
+              el: '#v_bind',
+              data: {
+                value_for_title_attribute: 'title đây này ',
+                value_for_type_attribute: 'file',
+                value_for_style_attribute: 'background-color: black;color: white;'
+              }
+            })
         </script>
     </body>
 </html>
