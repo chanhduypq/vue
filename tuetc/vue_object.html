@@ -12,19 +12,37 @@ and open the template in the editor.
         <script src="../dist/vue.min.js"></script>
     </head>
     <body>
-        <div id="app" v-on:click="changeHtml">
-          {{ data1 }}
+        <div id="app1">
+          {{ data }}
         </div>
+        <div id="app2">
+          {{ data }}
+        </div>
+        <button id="app3" v-on:click="changeHtml">
+          Hoán đổi html của 2 thẻ div
+        </button>
         <script type="text/javascript">
-            var app = new Vue({
-              el: '#app',
+            var app1 = new Vue({
+              el: '#app1',
               data: {
-                data1: '1',
-                data2: '2'
-              },
+                data: 'div 1'
+              }
+            });  
+            
+            var app2 = new Vue({
+              el: '#app2',
+              data: {
+                data: 'div 2'
+              }
+            });  
+            
+            var app3 = new Vue({
+              el: '#app3',
               methods: {
                 changeHtml: function () {
-                  this.data1+=' cộng dồn chuỗi';
+                  temp=app1.data;
+                  app1.data=app2.data;
+                  app2.data=temp;
                 }
               }
             });  
