@@ -18,10 +18,22 @@ and open the template in the editor.
         <div id="app2">
           {{ data }}
         </div>
-        <button id="app3" v-on:click="changeHtml">
-          Hoán đổi html của 2 thẻ div
-        </button>
+        <input :type="radio_checkbox" id="input"/>
+        <div id="app3">
+            <button v-on:click="changeHtml">
+              Hoán đổi html của 2 thẻ div
+            </button>
+            <button v-on:click="changeInput">
+              Hoán đổi radio và checkbox qua lại
+            </button>
+        </div>
         <script type="text/javascript">
+            var app_input = new Vue({
+              el: '#input',
+              data: {
+                radio_checkbox: 'radio'
+              }
+            });  
             var app1 = new Vue({
               el: '#app1',
               data: {
@@ -43,6 +55,15 @@ and open the template in the editor.
                   temp=app1.data;
                   app1.data=app2.data;
                   app2.data=temp;
+                },
+                changeInput: function () {
+                    if(app_input.radio_checkbox=='radio'){
+                        app_input.radio_checkbox='checkbox';
+                    }
+                    else{
+                        app_input.radio_checkbox='radio';
+                    }                  
+                  
                 }
               }
             });  
