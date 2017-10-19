@@ -13,10 +13,10 @@ and open the template in the editor.
         
     </head>
     <body>        
-        <div id="div1" v-if="seen">
+        <div id="div1" v-if="seen1">
             cái này sẽ dc hiển thị vì seen của nó là true, tức là i==1000
         </div>
-        <div id="div2" v-if="seen">
+        <div id="div2" v-if="seen2">
             cái này sẽ dc hiển thị vì seen của nó là false, tức là i!=1000
         </div>
         <script type="text/javascript">
@@ -24,13 +24,13 @@ and open the template in the editor.
             var app1 = new Vue({
               el: '#div1',
               data: {
-                seen: i==1000
+                seen1: i==1000
               }
             })
             var app2 = new Vue({
               el: '#div2',
               data: {
-                seen: i!=1000
+                seen2: i!=1000
               }
             })
             
