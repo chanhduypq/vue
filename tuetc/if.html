@@ -9,8 +9,31 @@ and open the template in the editor.
         <title>TODO supply a title</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    </head>
-    <body>
+        <script src="../dist/vue.min.js"></script>
         
+    </head>
+    <body>        
+        <div id="div1" v-if="seen">
+            cái này sẽ dc hiển thị vì seen của nó là true, tức là i==1000
+        </div>
+        <div id="div2" v-if="seen">
+            cái này sẽ dc hiển thị vì seen của nó là false, tức là i!=1000
+        </div>
+        <script type="text/javascript">
+            var i=1000;
+            var app1 = new Vue({
+              el: '#div1',
+              data: {
+                seen: i==1000
+              }
+            })
+            var app2 = new Vue({
+              el: '#div2',
+              data: {
+                seen: i!=1000
+              }
+            })
+            
+        </script>
     </body>
 </html>
