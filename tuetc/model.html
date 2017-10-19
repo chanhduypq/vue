@@ -9,8 +9,25 @@ and open the template in the editor.
         <title>TODO supply a title</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="../dist/vue.min.js"></script>
     </head>
     <body>
-        
+        <div id="tuetc">
+          <p>{{ model1 }}</p>
+          <input style="width: 50%;" v-model="model1"/>
+          <br>
+          <br>
+          <p>{{ model2 }}</p>
+          <input style="width: 50%;" v-model="model2"/>
+        </div>
+        <script type="text/javascript">
+            var app = new Vue({
+              el: '#tuetc',
+              data: {
+                model1: 'Đây là model 1. Nhập thêm vào nữa đi. ',
+                model2: 'Đây là model 2. Nhập thêm vào nữa đi. '
+              }
+            })
+        </script>
     </body>
 </html>
