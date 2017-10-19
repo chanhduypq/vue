@@ -21,7 +21,24 @@ and open the template in the editor.
         </div>
         <hr>
         <input id="event_keypress" style="width: 500px;" type="text" v-on:keypress="show_dialog" placeholder="Nhập vào đây để thấy event keypress"/>
+        <hr>
+        <div id="fn">
+          <button v-on:click="sum(1,2)">Hiển thị tổng</button>
+          <button v-on:click="show('chuỗi')">Hiển thị chuỗi</button>
+        </div>
         <script type="text/javascript">
+            new Vue({
+              el: '#fn',
+              methods: {
+                show: function (message) {
+                  alert(message)
+                },
+                sum: function (number1,number2) {
+                  alert(number1+number2);
+                },
+              }
+            })
+            
             var app = new Vue({
               el: '#event_click',
               data: {
