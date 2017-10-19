@@ -13,8 +13,8 @@ and open the template in the editor.
         
     </head>
     <body>
-        <div id="app">
-          {{ message }}
+        <div id="app" v-html="message">
+          
         </div>
         <script type="text/javascript">
             var app = new Vue({
