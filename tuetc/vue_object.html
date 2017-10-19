@@ -12,8 +12,8 @@ and open the template in the editor.
         <script src="../dist/vue.min.js"></script>
     </head>
     <body>
-        <div id="app">
-          
+        <div id="app" v-on:click="changeHtml">
+          {{ data1 }}
         </div>
         <script type="text/javascript">
             var app = new Vue({
@@ -21,14 +21,13 @@ and open the template in the editor.
               data: {
                 data1: '1',
                 data2: '2'
+              },
+              methods: {
+                changeHtml: function () {
+                  this.data1+=' cộng dồn chuỗi';
+                }
               }
             });  
-            console.log(app.data1);
-            console.log(app.data2);
-            app.data1+=' cộng dồn chuỗi';
-            app.data2='giá trị khác';
-            console.log(app.data1);
-            console.log(app.data2);
         </script>
     </body>
 </html>
