@@ -15,7 +15,7 @@ and open the template in the editor.
         <div id="event_click">
           <p>{{ message_tuetc }}</p>
           <p>{{ message_luanlt }}</p>
-          <button v-on:click="message_tuetc = message_tuetc.split('').reverse().join('')">Đảo chuỗi đầu tiên</button>
+          <button v-on:click.ctrl="message_tuetc = message_tuetc.split('').reverse().join('')">Đảo chuỗi đầu tiên</button>
           <button v-on:click="reverseSecondString">Đảo chuỗi thứ hai</button>
           <button @click="reverseBothString">Đảo cả 2 chuỗi</button>
         </div>
