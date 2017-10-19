@@ -9,8 +9,47 @@ and open the template in the editor.
         <title>TODO supply a title</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="../dist/vue.min.js"></script>
     </head>
     <body>
-        
+        <div id="event_click">
+          <p>{{ message_tuetc }}</p>
+          <p>{{ message_luanlt }}</p>
+          <button v-on:click="reverseFirstString">Đảo chuỗi đầu tiên</button>
+          <button v-on:click="reverseSecondString">Đảo chuỗi thứ hai</button>
+          <button v-on:click="reverseBothString">Đảo cả 2 chuỗi</button>
+        </div>
+        <hr>
+        <input id="event_keypress" style="width: 500px;" type="text" v-on:keypress="show_dialog" placeholder="Nhập vào đây để thấy event keypress"/>
+        <script type="text/javascript">
+            var app = new Vue({
+              el: '#event_click',
+              data: {
+                message_tuetc: 'Trần Công Tuệ',
+                message_luanlt: 'Lưu Thị Luân'
+              },
+              methods: {
+                reverseFirstString: function () {
+                  this.message_tuetc = this.message_tuetc.split('').reverse().join('')
+                },
+                reverseSecondString: function () {
+                  this.message_luanlt = this.message_luanlt.split('').reverse().join('')
+                },
+                reverseBothString: function () {
+                  this.message_tuetc = this.message_tuetc.split('').reverse().join('')
+                  this.message_luanlt = this.message_luanlt.split('').reverse().join('')
+                }
+              }
+            })
+            
+            var app1 = new Vue({
+              el: '#event_keypress',
+              methods: {
+                show_dialog: function () {
+                  alert('tuetc');
+                }
+              }
+            })
+        </script>
     </body>
 </html>
