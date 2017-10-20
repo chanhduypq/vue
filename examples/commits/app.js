@@ -16,6 +16,7 @@ var demo = new Vue({
 
   created: function () {
     this.fetchData()
+    document.getElementById('tuetc').innerHTML='test';
   },
 
   watch: {
