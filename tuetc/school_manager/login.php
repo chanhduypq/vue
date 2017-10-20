@@ -12,9 +12,10 @@ if(isset($_SESSION['username'])){
         <meta http-equiv="content-type" content="text/html;charset=utf-8;" />
         <link href="public/css/style.css" rel="stylesheet" type="text/css"/>       
         <script src="public/js/jquery-2.0.3.js"></script>
+        <script src="http://localhost/vue/dist/vue.min.js"></script>
     </head>
     <body>
-        <form id='frm_login' action="check_login.php" method="post" onsubmit="return false;">
+        <form id='frm_login' action="check_login.php" method="post" @submit.prevent="login">
             
             <div style="width: 100%;text-align: center;margin: 0 auto;padding-left: 30%;padding-right: 30%;">
                 <fieldset style="width: 40%;">
@@ -53,11 +54,12 @@ if(isset($_SESSION['username'])){
                 return true;
             }
             
-            jQuery(function ($){
-                $("#username").focus();
-               $("#submit").click(function (){
-                   if(validate()==true){
-                       $.ajax({
+            var form = new Vue({
+              el: '#frm_login',
+              methods: {
+                login: function () {                    
+                    if(validate()==true){
+                        $.ajax({
                            url:'check_login.php',
                            type: 'POST',
                            data: $("#frm_login").serialize(),
@@ -71,9 +73,33 @@ if(isset($_SESSION['username'])){
                           }
                            
                        });
-                   }
-               }) 
-            });
+                    }
+                }
+              }
+            });  
+            
+            
+//            jQuery(function ($){
+//                $("#username").focus();
+//               $("#submit").click(function (){
+//                   if(validate()==true){
+//                       $.ajax({
+//                           url:'check_login.php',
+//                           type: 'POST',
+//                           data: $("#frm_login").serialize(),
+//                           success: function(data) {
+//                               if($.trim(data)=='ok'){
+//                                   window.location='index.php';
+//                               }
+//                               else{
+//                                   alert(data);
+//                               }
+//                          }
+//                           
+//                       });
+//                   }
+//               }) 
+//            });
         </script>
     </body>
 </html>   
