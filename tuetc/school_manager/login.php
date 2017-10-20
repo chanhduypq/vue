@@ -78,28 +78,7 @@ if(isset($_SESSION['username'])){
               }
             });  
             
-            
-//            jQuery(function ($){
-//                $("#username").focus();
-//               $("#submit").click(function (){
-//                   if(validate()==true){
-//                       $.ajax({
-//                           url:'check_login.php',
-//                           type: 'POST',
-//                           data: $("#frm_login").serialize(),
-//                           success: function(data) {
-//                               if($.trim(data)=='ok'){
-//                                   window.location='index.php';
-//                               }
-//                               else{
-//                                   alert(data);
-//                               }
-//                          }
-//                           
-//                       });
-//                   }
-//               }) 
-//            });
+
         </script>
     </body>
 </html>   
