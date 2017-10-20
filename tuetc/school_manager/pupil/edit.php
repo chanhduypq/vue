@@ -37,7 +37,7 @@ while ($row = mysqli_fetch_array($result)) {
         <meta http-equiv="content-type" content="text/html;charset=utf-8;" />
         <link href="../public/css/style.css" rel="stylesheet" type="text/css"/>
         <link href="../public/css/menu.css" rel="stylesheet" type="text/css"/>        
-        <script src="../public/js/jquery-2.0.3.js"></script>
+        
 
         <link rel="stylesheet" href="../public/jquery-ui-1.10.3/themes/smoothness/jquery-ui.css" type="text/css"/>
         <script type="text/javascript" src="../public/jquery-ui-1.10.3/ui/jquery-ui.js"></script>

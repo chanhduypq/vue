@@ -29,7 +29,7 @@ if (count($_POST) > 0) {
         <meta http-equiv="content-type" content="text/html;charset=utf-8;" />
         <link href="../public/css/style.css" rel="stylesheet" type="text/css"/>
         <link href="../public/css/menu.css" rel="stylesheet" type="text/css"/>
-        <script src="../public/js/jquery-2.0.3.js"></script>
+        
     </head>
     <body>
         <?php 
