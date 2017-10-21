@@ -14,113 +14,186 @@ if (!isset($_SESSION['username'])) {
         <link href="../public/css/menu.css" rel="stylesheet" type="text/css"/>   
         <script src="../public/js/jquery-2.0.3.js"></script>
         <script src="http://localhost/vue/dist/vue.min.js"></script>
+        <style>
+            table {
+              border: 2px solid #42b983;
+              border-radius: 3px;
+              background-color: #fff;
+            }
+
+            th {
+              background-color: #42b983;
+              color: rgba(255,255,255,0.66);
+              cursor: pointer;
+              -webkit-user-select: none;
+              -moz-user-select: none;
+              -ms-user-select: none;
+              user-select: none;
+            }
+
+            td {
+              background-color: #f9f9f9;
+            }
+
+            th, td {
+              min-width: 120px;
+              padding: 10px 20px;
+            }
+
+            th.active {
+              color: #fff;
+            }
+
+            th.active .arrow {
+              opacity: 1;
+            }
+
+            .arrow {
+              display: inline-block;
+              vertical-align: middle;
+              width: 0;
+              height: 0;
+              margin-left: 5px;
+              opacity: 0.66;
+            }
+
+            .arrow.asc {
+              border-left: 4px solid transparent;
+              border-right: 4px solid transparent;
+              border-bottom: 4px solid #fff;
+            }
+
+            .arrow.dsc {
+              border-left: 4px solid transparent;
+              border-right: 4px solid transparent;
+              border-top: 4px solid #fff;
+            }
+        </style>
     </head>
     <body>
         <?php
         include_once '../menu.php';
         ?>
+        <script type="text/x-template" id="grid-template-pupil">
+          <table v-if="filteredData.length">
+            <thead>
+              <tr>
+                <th v-for="key in columns"
+                  @click="sortBy(key)"
+                  :class="{ active: sortKey == key }">
+                  {{ key | capitalize }}
+                  <span class="arrow" :class="sortOrders[key] > 0 ? 'asc' : 'dsc'">
+                  </span>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="entry in filteredData">
+                <td v-for="key in columns">
+                  {{entry[key]}}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <p v-else>No matches found.</p>
+        </script>
         <div id="div">
             <div class="right toolbar">
-                <input onclick="window.location = 'add.php';" type="button" value="Thêm mới" class="button">
+                <input @click="window.location = 'add.php';" type="button" value="Thêm mới" class="button">
             </div>
-            <table class="list" style="width: 100%;">
-
-                <tr>
-                    <th style="width: 10%;">
-                        lớp
-                    </th>
-                    <th style="width: 10%;">
-                        họ tên
-                    </th>
-                    <th style="width: 10%;">
-                        ngày sinh
-                    </th>
-                    <th style="width: 10%;">
-                        giới tính
-                    </th>
-                    <th style="width: 10%;">
-                        Tình trạng hôn nhân
-                    </th>
-                    <th style="width: 10%;">
-                        avatar
-                    </th>
-                    <th style="width: 20%;">
-                        vài thông tin khác                    
-                    </th>
-                    <th style="width: 20%;">&nbsp;</th>
-                </tr>
-                <?php
-                include '../define.php';
-                $conn = mysqli_connect(HOST, USERNAME, PASSWORD, DB_NAME) or die();
-                mysqli_query($conn, "set names 'utf8'");
-                $result = mysqli_query($conn, "select * from pupil_full order by class_id ASC");
-                while ($row = mysqli_fetch_array($result)) {
-                    ?>
-                    <tr>
-                        <td><?php echo $row['name']; ?></td>
-                        <td><?php echo $row['full_name']; ?></td>
-                        <td>
-                            <?php
-                            echo convertToVNDate($row['birthday']);
-                            ?>
-                        </td>
-                        <td>
-                            <?php
-                            if ($row['sex'] == '1') {
-                                echo 'nam';
-                            } else {
-                                echo 'nữ';
-                            }
-                            ?>
-                        </td>
-                        <td>
-                            <?php
-                            if ($row['married'] == '1') {
-                                echo 'đã kết hôn';
-                            } else {
-                                echo 'độc thân';
-                            }
-                            ?>
-                        </td>
-                        <td>
-                            <?php
-                            if (trim($row['avatar']) != '' && file_exists("../public/images/database/avatar/" . trim($row['avatar']))) {
-                                ?>
-                                <img src="../public/images/database/avatar/<?php echo $row['avatar']; ?>" style="width: 50px;height: 50px;"/>
-                                <?php
-                            }
-                            ?>
-                        </td>
-                        <td>
-                            <?php echo $row['introduce']; ?>
-                            <br>
-                            <?php
-                            if (trim($row['profile']) != '' && file_exists("../public/images/database/profile/" . trim($row['profile']))) {
-                                ?>
-                                <a href="download.php?file_name=<?php echo $row['profile']; ?>">
-                                    download
-                                </a>
-                                <?php
-                            }
-                            ?>
-                        </td>
-                        <td style="text-align: center;">
-
-                            <img @click="deletePupil(<?php echo $row['id']; ?>)" id="<?php echo $row['id']; ?>" class="delete" style="margin-right: 20px;" title="Nhấn vào đây để xóa" src="../public/images/delete-icon.png"/>
-
-                            <img @click="window.location = 'edit.php?id=<?php echo $row['id']; ?>';" title="Nhấn vào đây để sửa" src="../public/images/ico_edit.png"/>
-
-                        </td>
-                    </tr>
-                    <?php
-                }
-                ?>
-            </table>
+            <form id="pupil">
+                <input placeholder="nhập vào đây để tìm kiếm" name="q" v-model="q">
+            </form>
+            <pupil-grid
+                :data="gridData"
+                :columns="gridColumns"
+                :filter-key="q">
+              </pupil-grid> 
         </div>
 
         <script type="text/javascript">
+            Vue.component('pupil-grid', {
+              template: '#grid-template-pupil',
+              replace: true,
+              props: {
+                data: Array,
+                columns: Array,
+                filterKey: String
+              },
+              data: function () {
+                var sortOrders = {}
+                this.columns.forEach(function (key) {
+                  sortOrders[key] = 1
+                })
+                return {
+                  sortKey: '',
+                  sortOrders: sortOrders
+                }
+              },
+              computed: {
+                filteredData: function () {
+                  var sortKey = this.sortKey
+                  var filterKey = this.filterKey && this.filterKey.toLowerCase()
+                  var order = this.sortOrders[sortKey] || 1
+                  var data = this.data
+                  if (filterKey) {
+                    data = data.filter(function (row) {
+                      return Object.keys(row).some(function (key) {
+                        return String(row[key]).toLowerCase().indexOf(filterKey) > -1
+                      })
+                    })
+                  }
+                  if (sortKey) {
+                    data = data.slice().sort(function (a, b) {
+                      a = a[sortKey]
+                      b = b[sortKey]
+                      return (a === b ? 0 : a > b ? 1 : -1) * order
+                    })
+                  }
+                  return data
+                }
+              },
+              filters: {
+                capitalize: function (str) {
+                  return str.charAt(0).toUpperCase() + str.slice(1)
+                }
+              },
+              methods: {
+                sortBy: function (key) {
+                  this.sortKey = key
+                  this.sortOrders[key] = this.sortOrders[key] * -1
+                }
+              }
+            })
+            
             var table = new Vue({
                 el: '#div',
+                data: {
+                    q: '',
+                    gridColumns: ['name','full_name','birthday','sex','married','avatar','introduce'],
+                    gridData: [
+                      <?php 
+                      $i=0;
+                      include '../define.php';
+                    $conn = mysqli_connect(HOST, USERNAME, PASSWORD, DB_NAME) or die();
+                    mysqli_query($conn, "set names 'utf8'");
+                    $result = mysqli_query($conn, "select * from pupil_full order by class_id ASC");
+                      while ($row = mysqli_fetch_array($result)) {
+                          echo "{ name: '".$row['name'].
+                                  "',full_name: '".html_entity_decode($row['full_name']).
+                                  "',birthday: '".convertToVNDate($row['birthday']).
+                                  "',sex: '".($row['sex']=='1'?'nam':'nữ').
+                                  "',married: '".($row['married']=='1'?'đã kết hôn':'độc thân').
+                                  "',avatar: '".$row['avatar'].
+                                  "',introduce: '".html_entity_decode($row['introduce'])."' }";
+                          if($i< mysqli_num_rows($result)){
+                              echo ",";
+                          }
+                          $i++;
+                      }
+                      ?>
+                    ]
+                  },
                 methods: {
                     deletePupil: function (id) {
                         $.ajax({
