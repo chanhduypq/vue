@@ -103,7 +103,7 @@ if (!isset($_SESSION['username'])) {
               </tr>
             </tbody>
           </table>
-          <p v-else>No matches found.</p>
+          <p v-else>Không có kết quả.</p>
         </script>
         <div id="div">
             <div class="right toolbar">
