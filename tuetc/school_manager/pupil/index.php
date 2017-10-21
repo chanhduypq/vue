@@ -68,6 +68,10 @@ if (!isset($_SESSION['username'])) {
               border-right: 4px solid transparent;
               border-top: 4px solid #fff;
             }
+            
+            input{
+                width: 100%;
+            }
         </style>
     </head>
     <body>
@@ -110,11 +114,15 @@ if (!isset($_SESSION['username'])) {
             </div>
             <div style="clear: both;"></div>
             <form id="pupil">
-                <input placeholder="nhập vào đây để tìm kiếm" name="q" v-model="q">
+                <input placeholder="nhập vào đây để tìm kiếm tất cả" name="q" v-model="q">
+            </form>
+            <form>
+                <input placeholder="nhập vào đây để tìm kiếm theo họ tên" name="full_name" v-model="full_name">
             </form>
             <pupil-grid
                 :data="gridData"
-                :columns="gridColumns"
+                :columns="gridColumns" 
+                :filter-key-fullname="full_name"
                 :filter-key="q">
               </pupil-grid> 
         </div>
@@ -127,7 +135,8 @@ if (!isset($_SESSION['username'])) {
               props: {
                 data: Array,
                 columns: Array,
-                filterKey: String
+                filterKey: String,
+                filterKeyFullname: String
               },
               data: function () {
                 var sortOrders = {}
@@ -143,6 +152,7 @@ if (!isset($_SESSION['username'])) {
                 filteredData: function () {
                   var sortKey = this.sortKey
                   var filterKey = this.filterKey && this.filterKey.toLowerCase()
+                  var filterKeyFullname = this.filterKeyFullname && this.filterKeyFullname.toLowerCase()
                   var order = this.sortOrders[sortKey] || 1
                   var data = this.data
                   if (filterKey) {
@@ -150,6 +160,15 @@ if (!isset($_SESSION['username'])) {
                       return Object.keys(row).some(function (key) {
                         if(key!='id'){
                               return String(row[key]).toLowerCase().indexOf(filterKey) > -1
+                          }
+                      })
+                    })
+                  }
+                  else if (filterKeyFullname) {
+                    data = data.filter(function (row) {
+                      return Object.keys(row).some(function (key) {
+                        if(key=='full_name'){
+                              return String(row[key]).toLowerCase().indexOf(filterKeyFullname) > -1
                           }
                       })
                     })
@@ -211,6 +230,7 @@ if (!isset($_SESSION['username'])) {
                 el: '#div',
                 data: {
                     q: '',
+                    full_name:'',
                     gridColumns: ['name','full_name','birthday','sex','married','avatar','introduce','id'],
                     gridData: [
                       <?php 
