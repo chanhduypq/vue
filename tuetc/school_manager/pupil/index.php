@@ -223,7 +223,12 @@ if (!isset($_SESSION['username'])) {
                     $.ajax({
                         url: '../common/delete.php?id=' + id + '&table_name=pupil'
                     });
-                    $("#" + id).parent().parent().remove();
+                    for(i=0;i<this.data.length;i++){
+                        if(this.data[i].id==id){
+                            this.data.splice(i,1);
+                            break;
+                        }
+                    }
                 }
               }
             })

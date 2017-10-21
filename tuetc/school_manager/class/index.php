@@ -189,10 +189,16 @@ if (!isset($_SESSION['username'])) {
                   this.sortOrders[key] = this.sortOrders[key] * -1
                 },
                 deleteClass: function (id) {    
+                    
                     $.ajax({
                        url:'../common/delete.php?id='+id+'&table_name=class'
                     });
-                    $("#"+id).parent().parent().remove();
+                    for(i=0;i<this.data.length;i++){
+                        if(this.data[i].id==id){
+                            this.data.splice(i,1);
+                            break;
+                        }
+                    }
                 }
               }
             })
