@@ -90,8 +90,7 @@ if (!isset($_SESSION['username'])) {
             </thead>
             <tbody>
               <tr v-for="entry in filteredData">
-                <td v-for="key in columns" v-if="key!='id'">
-                  {{entry[key]}}
+                <td v-for="key in columns" v-if="key!='id'" v-html="entry[key]">
                 </td>
                 <td style="text-align: center;">
                         
@@ -119,6 +118,7 @@ if (!isset($_SESSION['username'])) {
                 :filter-key="q">
               </pupil-grid> 
         </div>
+        
 
         <script type="text/javascript">
             Vue.component('pupil-grid', {
