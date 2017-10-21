@@ -78,19 +78,27 @@ if (!isset($_SESSION['username'])) {
           <table v-if="filteredData.length">
             <thead>
               <tr>
-                <th v-for="key in columns"
+                <th v-for="key in columns" v-if="key!='id'"
                   @click="sortBy(key)"
                   :class="{ active: sortKey == key }">
                   {{ key | capitalize }}
                   <span class="arrow" :class="sortOrders[key] > 0 ? 'asc' : 'dsc'">
                   </span>
                 </th>
+                <th>&nbsp;</th>
               </tr>
             </thead>
             <tbody>
               <tr v-for="entry in filteredData">
-                <td v-for="key in columns">
+                <td v-for="key in columns" v-if="key!='id'">
                   {{entry[key]}}
+                </td>
+                <td style="text-align: center;">
+                        
+                    <img v-if="entry['count_pupil']=='0'" @click="deleteClass(entry['id'])" :id="entry['id']" class="delete" style="margin-right: 20px;" title="Nhấn vào đây để xóa" src="../public/images/delete-icon.png"/>
+
+                    <img @click="id=entry['id'];window.location='edit.php?id='+id;" title="Nhấn vào đây để sửa" src="../public/images/ico_edit.png"/>
+
                 </td>
               </tr>
             </tbody>
@@ -158,13 +166,28 @@ if (!isset($_SESSION['username'])) {
               },
               filters: {
                 capitalize: function (str) {
-                  return str.charAt(0).toUpperCase() + str.slice(1)
+                    if(str=='count_pupil'){
+                        return 'Số học sinh';
+                    }
+                    else if(str=='class_name'){
+                        return 'Tên lớp';
+                    }
+                    else{
+                        return str;
+                    }
+//                  return str.charAt(0).toUpperCase() + str.slice(1)
                 }
               },
               methods: {
                 sortBy: function (key) {
                   this.sortKey = key
                   this.sortOrders[key] = this.sortOrders[key] * -1
+                },
+                deleteClass: function (id) {    
+                    $.ajax({
+                       url:'../common/delete.php?id='+id+'&table_name=class'
+                    });
+                    $("#"+id).parent().parent().remove();
                 }
               }
             })
@@ -173,7 +196,7 @@ if (!isset($_SESSION['username'])) {
               el: '#div',
               data: {
                 q: '',
-                gridColumns: ['class_name'],
+                gridColumns: ['class_name','id','count_pupil'],
                 gridData: [
                   <?php 
                   $i=0;
@@ -182,7 +205,7 @@ if (!isset($_SESSION['username'])) {
                 mysqli_query($conn, "set names 'utf8'");
                 $result = mysqli_query($conn, "SELECT name,id,(SELECT count(*) from pupil WHERE class_id=class.id) as count_pupil FROM class");
                   while ($row = mysqli_fetch_array($result)) {
-                      echo "{ class_name: '".$row['name']."' }";
+                      echo "{ class_name: '".$row['name']."',id:'".$row['id']."',count_pupil:'".$row['count_pupil']."' }";
                       if($i< mysqli_num_rows($result)){
                           echo ",";
                       }
@@ -192,12 +215,6 @@ if (!isset($_SESSION['username'])) {
                 ]
               },
               methods: {
-                deleteClass: function (id) {    
-                    $.ajax({
-                       url:'../common/delete.php?id='+id+'&table_name=class'
-                    });
-                    $("#"+id).parent().parent().remove();
-                },
                 togglePupil: function (id) {    
                     if ($('#'+id).attr('src').indexOf('down') != -1) {
                         src = $('#'+id).attr('src');

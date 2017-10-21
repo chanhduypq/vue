@@ -78,19 +78,27 @@ if (!isset($_SESSION['username'])) {
           <table v-if="filteredData.length">
             <thead>
               <tr>
-                <th v-for="key in columns"
+                <th v-for="key in columns" v-if="key!='id'"
                   @click="sortBy(key)"
                   :class="{ active: sortKey == key }">
                   {{ key | capitalize }}
                   <span class="arrow" :class="sortOrders[key] > 0 ? 'asc' : 'dsc'">
                   </span>
                 </th>
+                <th>&nbsp;</th>
               </tr>
             </thead>
             <tbody>
               <tr v-for="entry in filteredData">
-                <td v-for="key in columns">
+                <td v-for="key in columns" v-if="key!='id'">
                   {{entry[key]}}
+                </td>
+                <td style="text-align: center;">
+                        
+                    <img @click="deletePupil(entry['id'])" :id="entry['id']" class="delete" style="margin-right: 20px;" title="Nhấn vào đây để xóa" src="../public/images/delete-icon.png"/>
+
+                    <img @click="id=entry['id'];window.location='edit.php?id='+id;" title="Nhấn vào đây để sửa" src="../public/images/ico_edit.png"/>
+
                 </td>
               </tr>
             </tbody>
@@ -155,13 +163,43 @@ if (!isset($_SESSION['username'])) {
               },
               filters: {
                 capitalize: function (str) {
-                  return str.charAt(0).toUpperCase() + str.slice(1)
+                    if(str=='name'){
+                        return 'Lớp';
+                    }
+                    else if(str=='full_name'){
+                        return 'Họ và tên';
+                    }
+                    else if(str=='birthday'){
+                        return 'Ngày sinh';
+                    }
+                    else if(str=='sex'){
+                        return 'Giới tính';
+                    }
+                    else if(str=='married'){
+                        return 'Tình trạng hôn nhân';
+                    }
+                    else if(str=='avatar'){
+                        return 'Ảnh đại diện';
+                    }
+                    else if(str=='introduce'){
+                        return 'Vài nét về bản thân';
+                    }
+                    else{
+                        return str;
+                    }
+//                  return str.charAt(0).toUpperCase() + str.slice(1)
                 }
               },
               methods: {
                 sortBy: function (key) {
                   this.sortKey = key
                   this.sortOrders[key] = this.sortOrders[key] * -1
+                },
+                deletePupil: function (id) {
+                    $.ajax({
+                        url: '../common/delete.php?id=' + id + '&table_name=pupil'
+                    });
+                    $("#" + id).parent().parent().remove();
                 }
               }
             })
@@ -170,7 +208,7 @@ if (!isset($_SESSION['username'])) {
                 el: '#div',
                 data: {
                     q: '',
-                    gridColumns: ['name','full_name','birthday','sex','married','avatar','introduce'],
+                    gridColumns: ['name','full_name','birthday','sex','married','avatar','introduce','id'],
                     gridData: [
                       <?php 
                       $i=0;
@@ -184,7 +222,8 @@ if (!isset($_SESSION['username'])) {
                                   "',birthday: '".convertToVNDate($row['birthday']).
                                   "',sex: '".($row['sex']=='1'?'nam':'nữ').
                                   "',married: '".($row['married']=='1'?'đã kết hôn':'độc thân').
-                                  "',avatar: '".$row['avatar'].
+                                  "',avatar: '".(trim($row['avatar'])!=''?'<img src="../public/images/database/avatar/'.$row['avatar'].'" style="width: 50px;height: 50px;"/>':'').
+                                  "',id: '".$row['id'].
                                   "',introduce: '".html_entity_decode($row['introduce'])."' }";
                           if($i< mysqli_num_rows($result)){
                               echo ",";
@@ -193,15 +232,7 @@ if (!isset($_SESSION['username'])) {
                       }
                       ?>
                     ]
-                  },
-                methods: {
-                    deletePupil: function (id) {
-                        $.ajax({
-                            url: '../common/delete.php?id=' + id + '&table_name=pupil'
-                        });
-                        $("#" + id).parent().parent().remove();
-                    }
-                }
+                  }
             });
         </script>
     </body>
