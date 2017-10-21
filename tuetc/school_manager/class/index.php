@@ -12,7 +12,7 @@ if (!isset($_SESSION['username'])) {
         <meta http-equiv="content-type" content="text/html;charset=utf-8;" />
         <link href="../public/css/style.css" rel="stylesheet" type="text/css"/>
         <link href="../public/css/menu.css" rel="stylesheet" type="text/css"/> 
-        <script src="../public/js/jquery-2.0.3.js"></script>
+        <script src="../public/js/axios.js"></script>
         <script src="http://localhost/vue/dist/vue.min.js"></script>
         <style>
             table {
@@ -144,7 +144,7 @@ if (!isset($_SESSION['username'])) {
               computed: {
                 filteredData: function () {
                   var sortKey = this.sortKey
-                  var filterKey = this.filterKey && this.filterKey.toLowerCase()
+                  var filterKey = this.filterKey.trim() && this.filterKey.trim().toLowerCase()
                   var order = this.sortOrders[sortKey] || 1
                   var data = this.data
                   if (filterKey) {
@@ -189,10 +189,10 @@ if (!isset($_SESSION['username'])) {
                   this.sortOrders[key] = this.sortOrders[key] * -1
                 },
                 deleteClass: function (id) {    
-                    
-                    $.ajax({
-                       url:'../common/delete.php?id='+id+'&table_name=class'
-                    });
+
+                    axios.get('../common/delete.php?id='+id+'&table_name=class')
+                      .then(function(response){                        
+                      });  
                     for(i=0;i<this.data.length;i++){
                         if(this.data[i].id==id){
                             this.data.splice(i,1);
@@ -216,7 +216,7 @@ if (!isset($_SESSION['username'])) {
                 mysqli_query($conn, "set names 'utf8'");
                 $result = mysqli_query($conn, "SELECT name,id,(SELECT count(*) from pupil WHERE class_id=class.id) as count_pupil FROM class");
                   while ($row = mysqli_fetch_array($result)) {
-                      echo "{ class_name: '".$row['name']."',id:'".$row['id']."',count_pupil:'".$row['count_pupil']."' }";
+                      echo "{ class_name: '".$row['name']."',id:'".$row['id']."',count_pupil:'".$row['count_pupil']." ".'<img onclick="togglePupil('.$row['id'].',this)" class="toggle" src="../public/images/down.png" style="width: 32px;height: 32px;cursor: pointer;"/><div class="list_pupil"></div>'."' }";
                       if($i< mysqli_num_rows($result)){
                           echo ",";
                       }
@@ -225,8 +225,9 @@ if (!isset($_SESSION['username'])) {
                   ?>
                 ]
               },
+              
               methods: {
-                togglePupil: function (id) {    
+                togglePupil: function (id) {   
                     if ($('#'+id).attr('src').indexOf('down') != -1) {
                         src = $('#'+id).attr('src');
                         src = src.replace('down', 'up');
@@ -247,6 +248,26 @@ if (!isset($_SESSION['username'])) {
               }
             }); 
             
+            function togglePupil(id,img) {   
+                if (img.getAttribute('src').indexOf('down') != -1) {
+                    src = img.getAttribute('src');
+                    src = src.replace('down', 'up');
+                    
+                    axios.get('../load_pupil.php?class_id='+id)
+                      .then(function(response){
+                          img.nextSibling.innerHTML=response.data;
+                      });  
+                      
+                } else {
+                    src = src.replace('up', 'down');
+                    img.nextSibling.innerHTML='';
+                }
+
+                img.setAttribute('src',src);
+
+                
+                
+            }
 
         </script>
         

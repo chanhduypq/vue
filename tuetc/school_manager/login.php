@@ -11,23 +11,29 @@ if(isset($_SESSION['username'])){
         <title>Login</title> 
         <meta http-equiv="content-type" content="text/html;charset=utf-8;" />
         <link href="public/css/style.css" rel="stylesheet" type="text/css"/>       
-        <script src="public/js/jquery-2.0.3.js"></script>
+        <script src="public/js/axios.js"></script>
         <script src="http://localhost/vue/dist/vue.min.js"></script>
     </head>
     <body>
         <form id='frm_login' action="check_login.php" method="post" @submit.prevent="login">
             
-            <div style="width: 100%;text-align: center;margin: 0 auto;padding-left: 30%;padding-right: 30%;">
-                <fieldset style="width: 40%;">
+            <div style="width: 100%;text-align: center;margin: 0 auto;padding-left: 10%;padding-right: 10%;">
+                <fieldset style="width: 80%;">
                     <legend align="center">đăng nhập</legend>
                     <label>
                         username:
-                        <input id="username" name="username" type="text" placeholder="nhập username vào đây"/>
+                        <input v-model="username" id="username" name="username" type="text" placeholder="nhập username vào đây"/>
+                    </label>
+                    <label v-if="error_username">
+                        username không được rỗng
                     </label>
                     <br>
                     <label>
                         password:
-                        <input id="password" name="password" type="password" placeholder="nhập password vào đây"/>
+                        <input v-model="password" id="password" name="password" type="password" placeholder="nhập password vào đây"/>
+                    </label>
+                    <label v-if="error_password">
+                        password không được rỗng
                     </label>
                     <br>
                     <div class="center">
@@ -38,42 +44,41 @@ if(isset($_SESSION['username'])){
 
         </form>
         <script type="text/javascript">
-            
-            function validate(){
-
-                if($('#username').val()==''){
-                    alert("Vui lòng nhập username");
-                    $('#username').focus();
-                    return false;
-                }
-                if($('#password').val()==''){
-                    alert("Vui lòng nhập password");
-                    $('#password').focus();
-                    return false;
-                }
-                return true;
-            }
-            
             var form = new Vue({
               el: '#frm_login',
+              data: {
+                username: '',
+                password: ''
+            },
+            computed:{
+                error_username:function (){
+                    if(this.username.trim()==''){
+                        return true;
+                    }
+                    return false;
+                },
+                error_password:function (){
+                    if(this.password==''){
+                        return true;
+                    }
+                    return false;
+                }
+            },
               methods: {
-                login: function () {                    
-                    if(validate()==true){
-                        $.ajax({
-                           url:'check_login.php',
-                           type: 'POST',
-                           data: $("#frm_login").serialize(),
-                           success: function(data) {
-                               if($.trim(data)=='ok'){
+                login: function () {    
+                    if(this.error_username==false&&this.error_password==false){
+                        axios.post('check_login.php', { username: document.getElementById('username').value, password: document.getElementById('password').value })
+                          .then(function(response){
+                               if(response.data=='ok'){
                                    window.location='index.php';
                                }
                                else{
-                                   alert(data);
+                                   alert(response.data);
                                }
-                          }
-                           
-                       });
+                          });  
                     }
+                    
+                    
                 }
               }
             });  

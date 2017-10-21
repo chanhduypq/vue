@@ -23,7 +23,7 @@ if (count($_POST) > 0) {
         
         
         <link rel="stylesheet" href="../public/jquery-ui-1.10.3/themes/smoothness/jquery-ui.css" type="text/css"/>
-        <script src="../public/js/jquery-2.0.3.js"></script>
+        <script src="../public/js/axios.js"></script>
         <script type="text/javascript" src="../public/jquery-ui-1.10.3/ui/jquery-ui.js"></script>
         <script src="../public/jquery-ui-1.10.3/ui/i18n/jquery.ui.datepicker-vi.js"></script>
     </head>

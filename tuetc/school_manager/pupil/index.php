@@ -12,7 +12,7 @@ if (!isset($_SESSION['username'])) {
         <meta http-equiv="content-type" content="text/html;charset=utf-8;" />
         <link href="../public/css/style.css" rel="stylesheet" type="text/css"/>
         <link href="../public/css/menu.css" rel="stylesheet" type="text/css"/>   
-        <script src="../public/js/jquery-2.0.3.js"></script>
+        <script src="../public/js/axios.js"></script>
         <script src="http://localhost/vue/dist/vue.min.js"></script>
         <style>
             table {
@@ -151,8 +151,8 @@ if (!isset($_SESSION['username'])) {
               computed: {
                 filteredData: function () {
                   var sortKey = this.sortKey
-                  var filterKey = this.filterKey && this.filterKey.toLowerCase()
-                  var filterKeyFullname = this.filterKeyFullname && this.filterKeyFullname.toLowerCase()
+                  var filterKey = this.filterKey.trim() && this.filterKey.trim().toLowerCase()
+                  var filterKeyFullname = this.filterKeyFullname.trim() && this.filterKeyFullname.trim().toLowerCase()
                   var order = this.sortOrders[sortKey] || 1
                   var data = this.data
                   if (filterKey) {
@@ -220,9 +220,9 @@ if (!isset($_SESSION['username'])) {
                   this.sortOrders[key] = this.sortOrders[key] * -1
                 },
                 deletePupil: function (id) {
-                    $.ajax({
-                        url: '../common/delete.php?id=' + id + '&table_name=pupil'
-                    });
+                    axios.get('../common/delete.php?id='+id+'&table_name=pupil')
+                      .then(function(response){                        
+                      });  
                     for(i=0;i<this.data.length;i++){
                         if(this.data[i].id==id){
                             this.data.splice(i,1);
