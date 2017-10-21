@@ -158,7 +158,7 @@ if (!isset($_SESSION['username'])) {
                   if (filterKey) {
                     data = data.filter(function (row) {
                       return Object.keys(row).some(function (key) {
-                        if(key!='id'){
+                        if(key!='id'&&key!='avatar'){
                               return String(row[key]).toLowerCase().indexOf(filterKey) > -1
                           }
                       })
