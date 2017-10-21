@@ -81,7 +81,7 @@ if (!isset($_SESSION['username'])) {
                 <th v-for="key in columns" v-if="key!='id'"
                   @click="sortBy(key)"
                   :class="{ active: sortKey == key }">
-                  {{ key | capitalize }}
+                  {{ key | label }}
                   <span class="arrow" :class="sortOrders[key] > 0 ? 'asc' : 'dsc'">
                   </span>
                 </th>
@@ -168,7 +168,7 @@ if (!isset($_SESSION['username'])) {
                 }
               },
               filters: {
-                capitalize: function (str) {
+                label: function (str) {
                     if(str=='count_pupil'){
                         return 'Số học sinh';
                     }
@@ -178,7 +178,9 @@ if (!isset($_SESSION['username'])) {
                     else{
                         return str;
                     }
-//                  return str.charAt(0).toUpperCase() + str.slice(1)
+                },
+                capitalize: function (str) {
+                  return str.charAt(0).toUpperCase() + str.slice(1)
                 }
               },
               methods: {

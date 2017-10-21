@@ -69,7 +69,7 @@ if (!isset($_SESSION['username'])) {
               border-top: 4px solid #fff;
             }
             
-            input{
+            input[type='text']{
                 width: 100%;
             }
         </style>
@@ -85,7 +85,7 @@ if (!isset($_SESSION['username'])) {
                 <th v-for="key in columns" v-if="key!='id'"
                   @click="sortBy(key)"
                   :class="{ active: sortKey == key }">
-                  {{ key | capitalize }}
+                  {{ key | label }}
                   <span class="arrow" :class="sortOrders[key] > 0 ? 'asc' : 'dsc'">
                   </span>
                 </th>
@@ -114,10 +114,10 @@ if (!isset($_SESSION['username'])) {
             </div>
             <div style="clear: both;"></div>
             <form id="pupil">
-                <input placeholder="nhập vào đây để tìm kiếm tất cả" name="q" v-model="q">
+                <input type="text" placeholder="nhập vào đây để tìm kiếm tất cả" name="q" v-model="q">
             </form>
             <form>
-                <input placeholder="nhập vào đây để tìm kiếm theo họ tên" name="full_name" v-model="full_name">
+                <input type="text" placeholder="nhập vào đây để tìm kiếm theo họ tên" name="full_name" v-model="full_name">
             </form>
             <pupil-grid
                 :data="gridData"
@@ -184,7 +184,7 @@ if (!isset($_SESSION['username'])) {
                 }
               },
               filters: {
-                capitalize: function (str) {
+                label: function (str) {
                     if(str=='name'){
                         return 'Lớp';
                     }
@@ -209,7 +209,9 @@ if (!isset($_SESSION['username'])) {
                     else{
                         return str;
                     }
-//                  return str.charAt(0).toUpperCase() + str.slice(1)
+                },
+                capitalize: function (str) {
+                  return str.charAt(0).toUpperCase() + str.slice(1)
                 }
               },
               methods: {
