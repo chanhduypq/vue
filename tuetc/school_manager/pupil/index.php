@@ -109,6 +109,7 @@ if (!isset($_SESSION['username'])) {
             <div class="right toolbar">
                 <input @click="window.location = 'add.php';" type="button" value="Thêm mới" class="button">
             </div>
+            <div style="clear: both;"></div>
             <form id="pupil">
                 <input placeholder="nhập vào đây để tìm kiếm" name="q" v-model="q">
             </form>
@@ -147,7 +148,9 @@ if (!isset($_SESSION['username'])) {
                   if (filterKey) {
                     data = data.filter(function (row) {
                       return Object.keys(row).some(function (key) {
-                        return String(row[key]).toLowerCase().indexOf(filterKey) > -1
+                        if(key!='id'){
+                              return String(row[key]).toLowerCase().indexOf(filterKey) > -1
+                          }
                       })
                     })
                   }
