@@ -1,7 +1,7 @@
 <?php 
 session_start();
-$username = $_POST['username'];
-$password = $_POST['password'];
+$username = $_GET['username'];
+$password = $_GET['password'];
 
 $username= str_replace("'", "\'", $username);
 $password= sha1($password);

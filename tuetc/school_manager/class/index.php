@@ -68,6 +68,32 @@ if (!isset($_SESSION['username'])) {
               border-right: 4px solid transparent;
               border-top: 4px solid #fff;
             }
+            
+            .container {
+                position: relative;
+                padding: 0;
+              }
+              .item {
+                width: 100%;
+                height: 30px;
+                background-color: #f3f3f3;
+                border: 1px solid #666;
+                box-sizing: border-box;
+              }
+              /* 1. declare transition */
+              .fade-move, .fade-enter-active, .fade-leave-active {
+                transition: all .5s cubic-bezier(.55,0,.1,1);
+              }
+              /* 2. declare enter from and leave to state */
+              .fade-enter, .fade-leave-to {
+                opacity: 0;
+                transform: scaleY(0.01) translate(30px, 0);
+              }
+              /* 3. ensure leaving items are taken out of layout flow so that moving
+                    animations can be calculated correctly. */
+              .fade-leave-active {
+                position: absolute;
+              }
         </style>
     </head>
     <body>
@@ -94,7 +120,7 @@ if (!isset($_SESSION['username'])) {
                 </td>
                 <td style="text-align: center;">
                         
-                    <img v-if="entry['count_pupil']=='0'" @click="deleteClass(entry['id'])" :id="entry['id']" class="delete" style="margin-right: 20px;" title="Nhấn vào đây để xóa" src="../public/images/delete-icon.png"/>
+                    <img v-if="entry['count_pupil'][0]=='0'" @click="deleteClass(entry['id'])" :id="entry['id']" class="delete" style="margin-right: 20px;" title="Nhấn vào đây để xóa" src="../public/images/delete-icon.png"/>
 
                     <img @click="id=entry['id'];window.location='edit.php?id='+id;" title="Nhấn vào đây để sửa" src="../public/images/ico_edit.png"/>
 
@@ -116,8 +142,7 @@ if (!isset($_SESSION['username'])) {
                 :data="gridData"
                 :columns="gridColumns"
                 :filter-key="q">
-              </class-grid>       
-
+              </class-grid>    
         </div>
         
 
@@ -216,7 +241,7 @@ if (!isset($_SESSION['username'])) {
                 mysqli_query($conn, "set names 'utf8'");
                 $result = mysqli_query($conn, "SELECT name,id,(SELECT count(*) from pupil WHERE class_id=class.id) as count_pupil FROM class");
                   while ($row = mysqli_fetch_array($result)) {
-                      echo "{ class_name: '".$row['name']."',id:'".$row['id']."',count_pupil:'".$row['count_pupil']." ".'<img onclick="togglePupil('.$row['id'].',this)" class="toggle" src="../public/images/down.png" style="width: 32px;height: 32px;cursor: pointer;"/><div class="list_pupil"></div>'."' }";
+                      echo "{ class_name: '".$row['name']."',id:'".$row['id']."',count_pupil:'".$row['count_pupil']." ".($row['count_pupil']>0?'<img onclick="togglePupil('.$row['id'].',this)" class="toggle" src="../public/images/down.png" style="width: 32px;height: 32px;cursor: pointer;"/><div class="list_pupil"></div>':'')."' }";
                       if($i< mysqli_num_rows($result)){
                           echo ",";
                       }
@@ -224,27 +249,6 @@ if (!isset($_SESSION['username'])) {
                   }
                   ?>
                 ]
-              },
-              
-              methods: {
-                togglePupil: function (id) {   
-                    if ($('#'+id).attr('src').indexOf('down') != -1) {
-                        src = $('#'+id).attr('src');
-                        src = src.replace('down', 'up');
-                    } else {
-                        src = src.replace('up', 'down');
-                    }
-
-                    $('#'+id).attr('src', src);
-                    
-                    $.ajax({
-                       url:'../load_pupil.php?class_id='+id,
-                       success: function(data) {
-                           $('#'+id).parent().parent().find('div.list_pupil').html(data).slideToggle();
-                      }
-
-                   });
-                }
               }
             }); 
             

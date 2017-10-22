@@ -22,7 +22,7 @@ if(isset($_SESSION['username'])){
                     <legend align="center">đăng nhập</legend>
                     <label>
                         username:
-                        <input v-model="username" id="username" name="username" type="text" placeholder="nhập username vào đây"/>
+                        <input v-model.trim="username" id="username" name="username" type="text" placeholder="nhập username vào đây"/>
                     </label>
                     <label v-if="error_username">
                         username không được rỗng
@@ -52,7 +52,7 @@ if(isset($_SESSION['username'])){
             },
             computed:{
                 error_username:function (){
-                    if(this.username.trim()==''){
+                    if(this.username==''){
                         return true;
                     }
                     return false;
@@ -67,7 +67,7 @@ if(isset($_SESSION['username'])){
               methods: {
                 login: function () {    
                     if(this.error_username==false&&this.error_password==false){
-                        axios.post('check_login.php', { username: document.getElementById('username').value, password: document.getElementById('password').value })
+                        axios.get('check_login.php?username='+this.username.trim()+'&password='+this.password)
                           .then(function(response){
                                if(response.data=='ok'){
                                    window.location='index.php';
