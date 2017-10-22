@@ -142,7 +142,9 @@ if (!isset($_SESSION['username'])) {
                 :data="gridData"
                 :columns="gridColumns"
                 :filter-key="q">
-              </class-grid>    
+              </class-grid>   
+            
+            <other-component></other-component>
         </div>
         
 
@@ -228,6 +230,11 @@ if (!isset($_SESSION['username'])) {
               }
             })
             
+            var Child = {
+              template: '<div>một component khác.</div>'
+            }
+
+            
             var table = new Vue({
               el: '#div',
               data: {
@@ -249,6 +256,9 @@ if (!isset($_SESSION['username'])) {
                   }
                   ?>
                 ]
+              },
+              components: {
+                'other-component': Child
               }
             }); 
             
