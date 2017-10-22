@@ -259,6 +259,11 @@ if (!isset($_SESSION['username'])) {
               },
               components: {
                 'other-component': Child
+              },
+              beforeCreate: function () {
+                  
+//                  bỏ comment dòng code này thi sẽ thấy ngay tác dụng của beforeCreate
+//                  document.getElementById('div').innerHTML='';
               }
             }); 
             
